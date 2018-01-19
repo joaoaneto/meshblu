@@ -169,6 +169,20 @@ options = [
     default: 80
   }
   {
+    name: 'meshblu-ws-port'
+    type: 'positiveInteger'
+    help: 'Port to listen on for HTTP'
+    env: 'MESHBLU_WS_PORT',
+    default: 2222
+  }
+  {
+    name: 'meshblu-ws-io-port'
+    type: 'positiveInteger'
+    help: 'Port to listen on for WS IO'
+    env: 'MESHBLU_WS_IO_PORT'
+    default: 5000
+  }
+  {
     name: 'private-key-base64'
     type: 'string'
     help: 'Base64-encoded private key'
@@ -198,7 +212,7 @@ options = [
     name: 'webhook-request-timeout'
     type: 'positiveInteger'
     env: 'WEBHOOK_REQUEST_TIMEOUT'
-    default: 5
+    default: 100
     help: 'Request timeout (in seconds) for webhooks'
   },
   {
@@ -214,6 +228,13 @@ options = [
     env: 'DISABLE_WEBHOOK_WORKER'
     default: false
     help: 'option for disabling webhook worker.'
+  }
+  {
+    name: 'disable-logging'
+    type: 'bool'
+    env: 'DISABLE_LOGGING'
+    default: false
+    help: 'option for disabling ws logging'
   }
 ]
 
@@ -278,6 +299,31 @@ options = {
     jobTimeoutSeconds:     opts.job_timeout_seconds
     maxConnections:        opts.max_connections
     port:                  opts.meshblu_http_port
+  meshbluWebsocket:
+    disableLogging: opts.disable_logging
+    port: opts.meshblu_ws_port
+    namespace: opts.namespace
+    redisUri: opts.redis_uri
+    jobLogRedisUri: opts.job_log_redis_uri
+    jobLogQueue: opts.job_log_queue
+    connectionPoolMaxConnections: opts.max_connections
+    jobTimeoutSeconds: opts.timeout
+    aliasServerUri: opts.alias_server_uri
+  meshbluSocketIO:
+    port: opts.meshblu_ws_io_port
+    namespace: opts.namespace
+    jobTimeoutSeconds: opts.job_timeout_seconds
+    jobLogRedisUri: opts.job_log_redis_uri
+    jobLogQueue: opts.job_log_queue
+    jobLogSampleRate: opts.job_log_sample_rate
+    redisUri: opts.redis_uri
+    cacheRedisUri: opts.cache_redis_uri
+    firehoseRedisUri: opts.firehose_redis_uri
+    maxConnections: opts.max_connections
+    aliasServerUri: opts.alias_server_uri
+    requestQueueName: opts.request_queue_name
+    responseQueueName:     "#{opts.responseQueueBaseName}:#{UUID.v1()}"
+    responseQueueBaseName: opts.response_queue_base_name
   webhookWorker:
     disable:          opts.disable_webhook_worker
     namespace:        opts.webhook_namespace
