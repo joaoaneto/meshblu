@@ -3,15 +3,20 @@ async            = require('async')
 DispatcherWorker = require('meshblu-core-dispatcher')
 MeshbluHttp      = require('meshblu-core-protocol-adapter-http')
 MeshbluWebSocket = require('meshblu-core-protocol-adapter-websocket')
-MeshbluSocketIO = require('meshblu-core-protocol-adapter-socket.io')
+MeshbluSocketIO  = require('meshblu-core-protocol-adapter-socket.io')
 MeshbluFirehose  = require('meshblu-core-firehose-socket.io')
 WebhookWorker    = require('meshblu-core-worker-webhook')
 debug            = require('debug')('meshblu:meshblu-core-runner')
+{ ParentConnection } = require ('./knot-parent-connection')
+config           = require('./../config')
+
 class MeshbluCoreRunner extends EventEmitter
   constructor: (options) ->
+    @knotParentConnection = new ParentConnection config
+    @knotParentConnection.startConnection()
     @dispatcherWorker = new DispatcherWorker options.dispatcherWorker
-    @meshbluHttp = new MeshbluHttp options.meshbluHttp
-    @meshbluWs = new MeshbluWebSocket options.meshbluWebsocket
+    @meshbluHttp = new MeshbluHttp(options.meshbluHttp, @knotParentConnection.getConnection())
+    @meshbluWs = new MeshbluWebSocket options.meshbluWebsocket #pass here the socket to parent
     @meshbluSocketIO = new MeshbluSocketIO options.meshbluSocketIO
     if @_isFirehoseEnabled options
       debug 'eae men'

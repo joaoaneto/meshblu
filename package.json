@@ -14,7 +14,8 @@
     "start": "node command.js",
     "start:profile": "node --trace-sync-io command.js",
     "test": "./test-start.sh --test-start",
-    "build": "coffee --compile --output dist/ --map src/*.coffee"
+    "build": "coffee --compile --output dist/ --map src/*.coffee",
+    "babel": "babel-node command.js"
   },
   "author": "Octoblu, Inc <npm@octoblu.com>",
   "license": "MIT",
@@ -26,8 +27,13 @@
     "meshblu-core-dispatcher": "^20.1.5",
     "meshblu-core-firehose-socket.io": "^2.0.1",
     "meshblu-core-protocol-adapter-http": "^6.1.3",
+    "meshblu-core-protocol-adapter-socket.io": "git+https://github.com/joaoaneto/meshblu-core-protocol-adapter-socket.io.git#devel_jasn_388",
     "meshblu-core-worker-webhook": "^4.1.8",
     "sigterm-handler": "^2.0.0",
     "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
   }
 }

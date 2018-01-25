@@ -14,8 +14,10 @@ main() {
     DEBUG=* \
     DISABLE_LOGGING='false' \
     FIREHOSE_DISABLE='false' \
+    FIREHOSE_PORT='3080' \
+    MESHBLU_WS_IO_PORT='6000' \
     JOB_TIMEOUT_SECONDS=60 \
-    node command.js "$@"
+    npm run babel "$@"
 }
 
 main "$@"
